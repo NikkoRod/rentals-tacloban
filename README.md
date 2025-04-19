@@ -17,13 +17,16 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 
+
 #kun may error permissions
 
 docker exec -it rentals_app bash
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 exit
+
 #open git bash tapos kadto ha project file then
+
 chown -R $USER:$USER src/storage src/bootstrap/cache
 chmod -R 775 src/storage src/bootstrap/cache
 
