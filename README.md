@@ -12,7 +12,7 @@ docker-compose up -d --build
 #tapos
 
 docker exec -it rentals_app bash
-composer install
+COMPOSER_PROCESS_TIMEOUT=30000 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
