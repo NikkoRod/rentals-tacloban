@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to Rentals Tacloban</title>
+    <title>Welcome to Rentals Tacloban may nangyari na</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
         :root {
