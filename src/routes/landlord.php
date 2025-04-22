@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 // ========== LANDLORD ROUTES ==========
 
-// Landlord Registration
-Route::get('/register/landlord', fn () => view('auth.register-landlord'))->name('register.landlord');
+use App\Http\Controllers\LandlordController;
 
-// Add more landlord-specific routes here (e.g., view listings, upload permits, etc.)
+
+Route::get('/register/landlord', [LandlordController::class, 'showRegisterForm'])->name('landlord.register');
+Route::post('/register/landlord', [LandlordController::class, 'register']);
