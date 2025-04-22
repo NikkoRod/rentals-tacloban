@@ -11,7 +11,7 @@ class AdminController extends Controller
     // Show pending landlord accounts
     public function showPendingAccounts()
     {
-        $pendingLandlords = User::where('is_admin', 1)  // Only landlords
+        $pendingLandlords = User::where('role', 'landlord')  // Only landlords
             ->where('is_approved', 0)  // Pending approval
             ->get();
 
@@ -38,6 +38,3 @@ class AdminController extends Controller
         return redirect()->route('admin.pending-accounts')->with('status', 'Landlord rejected.');
     }
 }
-
-
-

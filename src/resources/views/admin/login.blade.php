@@ -5,25 +5,23 @@
     <title>Admin | Rentals Tacloban</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--green);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9rem;
+        }
 
-
-.toggle-password {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--green);
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
-    font-size: 0.9rem;
-}
-
-.toggle-password:hover {
-    color: var(--green-hover);
-}
+        .toggle-password:hover {
+            color: var(--green-hover);
+        }
 
         :root {
             --black: #000;
@@ -113,20 +111,19 @@
         }
 
         .input-group input {
-    width: 100%;
-    padding: 10px;
-    padding-right: 60px; /* Make room for the toggle button */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    color: var(--black);
-    box-sizing: border-box;
-}
+            width: 100%;
+            padding: 10px;
+            padding-right: 60px; /* Make room for the toggle button */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--black);
+            box-sizing: border-box;
+        }
 
-.password-wrapper {
-    position: relative;
-}
-
+        .password-wrapper {
+            position: relative;
+        }
 
         .input-group input:focus {
             border-color: var(--green);
@@ -178,13 +175,11 @@
         }
 
         .signup-options a:hover {
-           
         }
 
         .signup-dropdown:hover .signup-options {
             display: block;
         }
-
     </style>
 </head>
 <body>
@@ -193,62 +188,60 @@
     <header class="header">
         <div class="header-content">
             <h1>Rentals Tacloban</h1>
-
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
     <div class="login-container">
-    <form method="POST" action="{{ url('/admin/login') }}" class="login-form">
-    @csrf
-    <h2>Admin</h2>
+        <form method="POST" action="{{ url('/admin/login') }}" class="login-form">
+            @csrf
+            <h2>Admin</h2>
 
-    @if($errors->any())
-        <div style="color: red; margin-bottom: 15px;">
-            <ul style="padding-left: 20px;">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            @if($errors->any())
+                <div style="color: red; margin-bottom: 15px;">
+                    <ul style="padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-    <div class="input-group">
-        <label for="email">Email Address</label>
-        <input type="email" name="email" id="email" placeholder="Enter your admin email" value="{{ old('email') }}" required>
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="Enter your admin email" value="{{ old('email') }}" required>
+            </div>
+
+            <div class="input-group password-wrapper">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                <button type="button" class="toggle-password" onclick="togglePassword()">Show</button>
+            </div>
+
+            <!-- 👇 Forgot Password Button -->
+            <div style="text-align: right; margin-bottom: 15px;">
+                <a href="{{ url('/admin/forgot-password') }}" style="font-size: 0.9rem; color: var(--green); text-decoration: none;">
+                    Forgot Password?
+                </a>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
     </div>
 
-    <div class="input-group password-wrapper">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="Enter your password" required>
-        <button type="button" class="toggle-password" onclick="togglePassword()">Show</button>
-    </div>
-
-    <!-- 👇 Forgot Password Button -->
-    <div style="text-align: right; margin-bottom: 15px;">
-        <a href="{{ url('/admin/forgot-password') }}" style="font-size: 0.9rem; color: var(--green); text-decoration: none;">
-            Forgot Password?
-        </a>
-    </div>
-
-    <button type="submit" class="login-btn">Login</button>
-</form>
-
-
-    </div>
     <script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const toggleBtn = document.querySelector('.toggle-password');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleBtn.textContent = 'Hide';
-        } else {
-            passwordInput.type = 'password';
-            toggleBtn.textContent = 'Show';
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = 'Show';
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
-</html>  
+</html>

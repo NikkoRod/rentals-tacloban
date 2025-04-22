@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class IsAdmin
 {
-    public function handle(Request $request, Closure $next)
-    {
-        // Check if the user is authenticated and if the 'is_admin' value is 1
-        if (Auth::check() && Auth::user()->is_admin == 1) {
-            return $next($request);
-        }
-
-        // Redirect to admin login if not an admin
-        return redirect('/admin/login');
+    public function handle($request, Closure $next)
+{
+    if (auth()->check() && auth()->user()->role === 'admin') {
+        return $next($request);
     }
+
+    abort(403, 'Unauthorized');
+}
+
 }
