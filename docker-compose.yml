@@ -53,6 +53,14 @@ services:
       - mysql
     networks:
       - rentals
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"  
+      - "1025:1025" 
+    networks:
+      - rentals
+
 
 volumes:
   db_data:
@@ -60,3 +68,7 @@ volumes:
 networks:
   rentals:
     driver: bridge
+
+
+
+
