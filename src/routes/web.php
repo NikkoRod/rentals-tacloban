@@ -1,24 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
-// Welcome page
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// ========== PUBLIC ROUTES ==========
 
-// Login page (uses Laravel Breeze, Jetstream, or your auth setup)
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+//welcomepage
+Route::get('/', fn () => view('welcome'))->name('home');
+Route::get('/login', fn () => view('auth.login'))->name('login');
 
-// Register as Tenant
-Route::get('/register/tenant', function () {
-    return view('auth.register-tenant');
-})->name('register.tenant');
 
-// Register as Landlord
-Route::get('/register/landlord', function () {
-    return view('auth.register-landlord');
-})->name('register.landlord');
-
+//testmail la
+Route::get('/test-mail', function () {
+    Mail::raw('Hello from Mailpit test!', function ($message) {
+        $message->to('test@example.com')->subject('Mailpit Test');
+    });
+    return 'Email sent!';
+});
