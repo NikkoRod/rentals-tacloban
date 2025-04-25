@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__ . '/../routes/admin.php',
         __DIR__ . '/../routes/tenant.php',
         __DIR__ . '/../routes/landlord.php',
+        __DIR__.'/auth.php',
+
     ]
 )
     ->withMiddleware(function (Middleware $middleware) {

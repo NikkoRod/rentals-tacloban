@@ -22,17 +22,17 @@ class AdminPasswordResetController extends Controller
         // Validate the input email
         $request->validate(['email' => 'required|email']);
 
-        // Try to find the user in the 'users' table with 'is_admin' = 1
-        $user = User::where('email', $request->email)->where('is_admin', 1)->first();
+        // Try to find the admin user using the 'role' field
+        $user = User::where('email', $request->email)
+                    ->where('role', 'admin')
+                    ->first();
 
-        // If user exists, generate and send the reset link via the notification
         if ($user) {
             $token = Password::broker('admins')->createToken($user);
-            $user->notify(new AdminResetPassword($token, $user->email)); // Send reset link email
+            $user->notify(new AdminResetPassword($token, $user->email));
 
             return back()->with('status', 'Reset link sent to your email!');
         } else {
-            // No admin user found with the provided email
             return back()->withErrors(['email' => 'No admin user found with that email address.']);
         }
     }
@@ -49,25 +49,26 @@ class AdminPasswordResetController extends Controller
     // Handle the password reset
     public function reset(Request $request)
     {
-        // Validate the request input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
             'token' => 'required',
         ]);
 
-        // Attempt to reset the password for the admin user
+        // Use 'admins' broker and ensure user has 'admin' role
         $status = Password::broker('admins')->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->password = bcrypt($password);  // Hash the new password
-                $user->save();  // Save the updated user model
+                if ($user->role === 'admin') {
+                    $user->password = bcrypt($password);
+                    $user->save();
+                }
             }
         );
 
-        // If the password reset was successful, redirect to login
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('admin.login')->with('status', 'Password reset successfully!')
-            : back()->withErrors(['email' => __($status)]);
+    ? back()->with('status', 'Password reset successfully!')
+    : back()->withErrors(['email' => __($status)]);
+
     }
 }

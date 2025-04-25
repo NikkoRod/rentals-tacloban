@@ -6,126 +6,130 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
-        /* Color Palette */
         :root {
-            --black: #000000;
+            --black: #1a1a1a;
             --white: #ffffff;
-            --green: #14532d; /* Dark green */
-            --gray: #f4f4f4;
+            --green: #2E7D32;
+            --light-green: #4CAF50;
+            --gray: #f8f9fa;
+            --dark-gray: #343a40;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--gray);
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
         }
 
         header {
-            position: sticky;
-            top: 0;
-            background-color: var(--black);
-            color: var(--white);
-            padding: 15px;
+            background-color: var(--white);
+            color: var(--black);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 1.5em;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
         .logout-btn {
             background-color: var(--green);
             color: var(--white);
             border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 0.9em;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
-            background-color: #0f3e1b;
+            background-color: var(--light-green);
+            transform: translateY(-2px);
         }
 
         .dashboard-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            flex-grow: 1;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            margin: 1rem auto;
+            max-width: 1400px;
         }
 
         .card {
             background-color: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
         .card h3 {
-            color: var(--green);
-            margin-bottom: 15px;
-            font-size: 1.2em;
+            color: var(--black);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .card p {
-            margin-bottom: 20px;
-            color: var(--black);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
 
         .card .btn {
             background-color: var(--green);
             color: var(--white);
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            font-size: 0.9em;
-            text-align: center;
         }
 
         .card .btn:hover {
-            background-color: #0f3e1b;
-        }
-
-        .card .btn-secondary {
-            background-color: #333;
-        }
-
-        .card .btn-secondary:hover {
-            background-color: #555;
+            background-color: var(--light-green);
+            transform: translateY(-2px);
         }
 
         footer {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            padding: 1.5rem;
             text-align: center;
-            padding: 20px;
-            background-color: var(--black);
-            color: var(--white);
-            position: relative;
-            bottom: 0;
-            width: 100%;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: auto;
         }
 
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Admin</h1>
     <form method="POST" action="{{ route('admin.logout') }}">
         @csrf
         <button type="submit" class="logout-btn">Logout</button>
@@ -136,28 +140,26 @@
     <!-- Manage Pending Accounts Card -->
     <div class="card">
         <h3>Manage Pending Accounts</h3>
-        <p>Review and approve new accounts (tenant or landlord).</p>
-        <a href="{{ route('admin.pending-accounts') }}" class="btn">Manage Accounts</a>
+        <p>Review and approve landlord Accounts.</p>
+        <a class="btn">Manage Accounts</a>
     </div>
-
-
-    <!-- <div class="card">
+    <div class="card">
         <h3>Manage Flagged Listings</h3>
         <p>Review listings that have been flagged for review.</p>
-        <a href="{{ route('admin.manage.flagged') }}" class="btn">Manage Listings</a>
+        <a class="btn">Manage Listings</a>
     </div>
 
     <div class="card">
         <h3>Manage User Accounts</h3>
         <p>Search, filter, and edit all user accounts.</p>
-        <a href="{{ route('admin.manage.users') }}" class="btn">Manage Users</a>
+        <a class="btn">Manage Users</a>
     </div>
 
     <div class="card">
         <h3>Manage Listings</h3>
         <p>View and manage all property listings.</p>
-        <a href="{{ route('admin.manage.listings') }}" class="btn">Manage Listings</a>
-    </div> -->
+        <a class="btn">Manage Listings</a>
+    </div>
 </div>
 
 <footer>

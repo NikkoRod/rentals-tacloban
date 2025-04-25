@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Forgot Password | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | Admin</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
         :root {
@@ -124,45 +125,80 @@
             background-color: #f8d7da;
             color: #dc3545;
         }
+        .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimming effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+        }
+
+#feedback-box {
+    max-width: 400px;
+    padding: 25px;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+        }
+
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-content">
-            <h1>Rentals Tacloban</h1>
-        </div>
-    </header>
+<header class="header">
+    <div class="header-content">
+        <h1>Rentals Tacloban</h1>
+    </div>
+</header>
 
-    <div class="login-container">
-        <form method="POST" action="{{ route('admin.password.email') }}" class="login-form">
-            @csrf
-            <h2>Forgot Password</h2>
+<div class="login-container">
+    <form method="POST" action="{{ route('password.update') }}" class="login-form">
+        @csrf
+        <h2>Reset Password</h2>
 
+        @if (session('status') === 'Password reset successfully!' || $errors->any())
+    <div class="modal-overlay">
+        <div id="feedback-box" class="status-message {{ session('status') ? 'success' : 'error' }}">
             @if (session('status'))
-                <div class="status-message success">
-                    {{ session('status') }}
-                </div>
+                <p>{{ session('status') }}</p>
+                <button onclick="window.location.href='{{ route('login') }}'" class="login-btn" style="margin-top: 10px;">Proceed to Login</button>
             @endif
 
             @if ($errors->any())
-                <div class="status-message error">
-                    <ul style="padding-left: 20px;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                <ul style="padding-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button onclick="document.querySelector('.modal-overlay').style.display='none'" class="login-btn" style="margin-top: 10px;">Close</button>
             @endif
-
-            <div class="input-group">
-                <label for="email">Enter your admin email address</label>
-                <input type="email" name="email" id="email" value="{{ old('email') }}" required>
-            </div>
-
-            <button type="submit" class="login-btn">Send Reset Link</button>
-        </form>
+        </div>
     </div>
+@endif
+
+
+        <input type="hidden" name="token" value="{{ request()->route('token') }}">
+        <input type="hidden" name="email" value="{{ old('email', request()->email) }}">
+
+        <div class="input-group">
+            <label for="password">New Password</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" required>
+        </div>
+
+        <button type="submit" class="login-btn">Reset Password</button>
+    </form>
+</div>
 
 </body>
 </html>

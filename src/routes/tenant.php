@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TenantController;
 
-// ========== TENANT ROUTES ==========
+//Tenant
 
-// Tenant Registration
-Route::get('/register/tenant', fn () => view('auth.register-tenant'))->name('register.tenant');
+Route::get('/register/tenant', [TenantController::class, 'showRegisterForm'])->name('tenant.register');
+Route::post('/register/tenant', [TenantController::class, 'register']);
 
-// Add more tenant-specific routes here
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('home'); 
+})->name('logout');

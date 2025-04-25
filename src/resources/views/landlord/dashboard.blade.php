@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tenant Dashboard | Rentals Tacloban</title>
+    <title>Landlord Dashboard | Rentals Tacloban</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
         :root {
@@ -143,7 +143,7 @@
     <div class="dashboard-container">
         <div class="dashboard-card">
             <h2>Welcome, {{ Auth::user()->name }}!</h2>
-            <p>Tenant Dashboard didi.</p>
+            <p>Landlord Dashboard didi.</p>
         </div>
     </div>
 

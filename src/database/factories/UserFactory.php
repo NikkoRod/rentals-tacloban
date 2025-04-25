@@ -27,9 +27,10 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make('password'), // default password
+            'password' => bcrypt('password'),
+            'role' => 'tenant',
+            'contact_number' => $this->faker->numerify('##########'),
             'remember_token' => Str::random(10),
-            'role' => 'tenant', // Default; you can override when calling the factory
         ];
     }
 

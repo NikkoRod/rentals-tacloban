@@ -1,16 +1,16 @@
 @extends('layouts.main')
 
-@section('title', 'Register as Landlord')
+@section('title', 'Register as Tenant')
 
 @section('content')
     <div class="form-container">
-        <h2>Landlord Registration</h2>
+        <h2>Tenant Registration</h2>
 
         @if(session('success'))
             <div class="success">{{ session('success') }}</div>
         @endif
 
-        <form method="POST" action="{{ url('/register/landlord') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url('/register/tenant') }}">
             @csrf
 
             <label for="name">Full Name</label>
@@ -20,7 +20,7 @@
             <label for="email">Email</label>
             <input type="email" name="email" value="{{ old('email') }}">
             @error('email') <div class="error">{{ $message }}</div> @enderror
-            
+
             <label for="contact_number">Mobile Number</label>
             <input type="text" name="contact_number" value="{{ old('contact_number') }}">
             @error('contact_number') <div class="error">{{ $message }}</div> @enderror
@@ -31,10 +31,6 @@
 
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" name="password_confirmation">
-
-            <label for="business_permit">Business Permit (PDF only)</label>
-            <input type="file" name="business_permit">
-            @error('business_permit') <div class="error">{{ $message }}</div> @enderror
 
             <button type="submit">Register</button>
         </form>

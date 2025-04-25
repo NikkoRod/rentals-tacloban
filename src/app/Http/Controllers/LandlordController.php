@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use App\Models\BusinessPermit;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class LandlordController extends Controller
 {
@@ -10,18 +15,37 @@ class LandlordController extends Controller
     {
         return view('landlord.register');
     }
+public function register(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|confirmed|min:6',
+        'contact_number' => 'required|digits:11', 
+        'business_permit' => 'required|file|mimes:pdf|max:2048',
+    ]);
 
-    public function register(Request $request)
-    {
-        // For now, just validate and dump the inputs
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:landlords,email',
-            'password' => 'required|confirmed|min:6',
-            'business_permit' => 'required|file|mimes:pdf|max:2048',
-        ]);
+    
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => bcrypt($validated['password']),
+        'contact_number' => $validated['contact_number'],
+        'role' => 'landlord', 
+    ]);
 
-        // Placeholder: You’ll save to DB and hash password later
-        return back()->with('success', 'Registration successful (stub).');
-    }
+    $permitPath = $request->file('business_permit')->store('business_permits', 'public');
+
+    
+    BusinessPermit::create([
+        'user_id' => $user->id,
+        'permit_path' => $permitPath,
+        'is_approved' => 0, 
+    ]);
+
+    $user->sendEmailVerificationNotification();
+
+    return back()->with('success', 'Registration successful. Please check your email for verification.');
+}
+
 }

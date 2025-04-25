@@ -28,6 +28,9 @@
             padding: 20px 0;
             width: 100%;
             border-bottom: 3px solid var(--green-hover);
+            position: sticky;
+            top: 0; /* Stick to the top */
+            z-index: 1000; /* Stay above other content */
         }
 
         .header-content {
@@ -130,25 +133,22 @@
 
 <!-- HEADER -->
 <header class="header">
-        <div class="header-content">
-            <h1>Rentals Tacloban</h1>
-            <nav class="header-nav">
-                <div class="signup-dropdown">
-                    <a href="#">Sign Up</a>
-                    <div class="signup-options">
-                        <a href="{{ url('/register/tenant') }}">As Tenant</a>
-                        <a href="{{ url('/register/landlord') }}">As Landlord</a>
-                    </div>
+    <div class="header-content">
+        <h1>Rentals Tacloban</h1>
+        <nav class="header-nav">
+            <div class="signup-dropdown">
+                <a href="#">Sign Up</a>
+                <div class="signup-options">
+                    <a href="{{ url('/register/tenant') }}">As Tenant</a>
+                    <a href="{{ url('/register/landlord') }}">As Landlord</a>
                 </div>
-                <a href="{{ route('login') }}">Login</a>
-                
-            </nav>
-        </div>
-    </header>
+            </div>
+            <a href="{{ route('login') }}">Login</a>
+        </nav>
+    </div>
+</header>
 
-
-    <!-- Main Content -->
-    @yield('content')
+@yield('content')
 
 </body>
 </html>

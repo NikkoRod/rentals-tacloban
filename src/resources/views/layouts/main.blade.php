@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Rentals Tacloban')</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    
+    <!-- Page-specific styles -->
+    @stack('styles')
+
     <style>
         :root {
             --black: #000;
@@ -28,7 +32,11 @@
             padding: 20px 0;
             width: 100%;
             border-bottom: 3px solid var(--green-hover);
+            position: sticky;
+            top: 0; /* Stick to the top */
+            z-index: 1000; /* Stay above other content */
         }
+
 
         .header-content {
             max-width: 1200px;
@@ -159,25 +167,105 @@
             color: red;
             font-size: 0.9rem;
         }
+        .page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+}
 
-    </style>
+.reset-container {
+    background: white;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reset-container h2 {
+    text-align: center;
+    color: #14532d;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.btn-submit {
+    background-color: #14532d;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #1f6b3d;
+}
+
+.message {
+    color: green;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+}
+        </style>
 </head>
-<body>
 
+<body class="@yield('body-class', '')">
     <!-- HEADER -->
     <header class="header">
         <div class="header-content">
             <h1>Rentals Tacloban</h1>
             <nav class="header-nav">
-                <div class="signup-dropdown">
-                    <a href="#">Sign Up</a>
-                    <div class="signup-options">
-                        <a href="{{ url('/register/tenant') }}">As Tenant</a>
-                        <a href="{{ url('/register/landlord') }}">As Landlord</a>
-                    </div>
-                </div>
-                <a href="{{ route('login') }}">Login</a>
-            </nav>
+    @guest
+        <div class="signup-dropdown">
+            <a href="#">Sign Up</a>
+            <div class="signup-options">
+                <a href="{{ url('/register/tenant') }}">As Tenant</a>
+                <a href="{{ url('/register/landlord') }}">As Landlord</a>
+            </div>
+        </div>
+        <a href="{{ route('login') }}">Login</a>
+    @endguest
+
+    @auth
+        <!-- Optionally, show something like a user profile or logout -->
+        <a href="{{ route('logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Logout
+        </a>
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    @endauth
+</nav>
+
         </div>
     </header>
 

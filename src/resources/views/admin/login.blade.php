@@ -5,19 +5,37 @@
     <title>Admin | Rentals Tacloban</title>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <style>
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--green);
-            font-weight: bold;
-            cursor: pointer;
-            padding: 0;
-            font-size: 0.9rem;
-        }
+        .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 60px; /* Make space for button */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--black);
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--green);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
         .toggle-password:hover {
             color: var(--green-hover);
@@ -121,10 +139,6 @@
             box-sizing: border-box;
         }
 
-        .password-wrapper {
-            position: relative;
-        }
-
         .input-group input:focus {
             border-color: var(--green);
             outline: none;
@@ -212,13 +226,16 @@
                 <input type="email" name="email" id="email" placeholder="Enter your admin email" value="{{ old('email') }}" required>
             </div>
 
-            <div class="input-group password-wrapper">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Enter your password" required>
-                <button type="button" class="toggle-password" onclick="togglePassword()">Show</button>
-            </div>
+            <div class="input-group">
+    <label for="password">Password</label>
+    <div class="password-wrapper">
+        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+        <button type="button" class="toggle-password" onclick="togglePassword()">Show</button>
+    </div>
+</div>
 
-            <!-- 👇 Forgot Password Button -->
+
+
             <div style="text-align: right; margin-bottom: 15px;">
                 <a href="{{ url('/admin/forgot-password') }}" style="font-size: 0.9rem; color: var(--green); text-decoration: none;">
                     Forgot Password?

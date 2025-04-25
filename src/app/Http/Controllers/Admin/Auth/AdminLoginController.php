@@ -23,16 +23,12 @@ class AdminLoginController extends Controller
             'password' => 'required',
         ]);
 
-        // Attempt to log in with the given credentials and check if the user is an admin
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Check if the authenticated user is an admin
-            $user = Auth::user();
-            if ($user->is_admin == 1) {
-                // Redirect to the admin dashboard if the user is an admin
-                return redirect()->route('admin.dashboard');
-            }
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            // If the user is not an admin, log them out and show an error message
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+        }
             Auth::logout();
             return back()->withErrors(['email' => 'Invalid admin credentials.']);
         }

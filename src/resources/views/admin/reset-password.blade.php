@@ -125,36 +125,71 @@
             background-color: #f8d7da;
             color: #dc3545;
         }
+        #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+    }
+
+    .popup-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 400px;
+        width: 90%;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 1001;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-message.success {
+        border-left: 6px solid #28a745;
+    }
+
+    .popup-message.error {
+        border-left: 6px solid #dc3545;
+    }
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="header-content">
-            <h1>Rentals Tacloban - Admin Panel</h1>
+            <h1>Rentals Tacloban</h1>
         </div>
     </header>
-
     <div class="login-container">
         <form method="POST" action="{{ route('admin.password.update') }}" class="login-form">
             @csrf
             <h2>Reset Password</h2>
 
-            @if (session('status'))
-                <div class="status-message success">
-                    {{ session('status') }}
-                </div>
-            @endif
+            <div id="overlay" style="display: none;"></div>
 
-            @if ($errors->any())
-                <div class="status-message error">
-                    <ul style="padding-left: 20px;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+@if (session('status') === 'Password reset successfully!')
+<div class="popup-message success" id="feedback-box">
+    <p>{{ session('status') }}</p>
+    <button onclick="window.location.href='{{ route('admin.login') }}'" class="login-btn" style="margin-top: 10px;">Proceed to Login</button>
+</div>
+@endif
+
+@if ($errors->any())
+<div class="popup-message error" id="feedback-box">
+    <ul style="padding-left: 20px;">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button onclick="closePopup()" class="login-btn" style="margin-top: 10px;">Close</button>
+</div>
+@endif
+
 
             <input type="hidden" name="token" value="{{ $token }}">
             <input type="hidden" name="email" value="{{ $email }}">
@@ -172,6 +207,21 @@
             <button type="submit" class="login-btn">Reset Password</button>
         </form>
     </div>
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const feedbackBox = document.getElementById('feedback-box');
+        const overlay = document.getElementById('overlay');
+
+        if (feedbackBox) {
+            overlay.style.display = 'block';
+        }
+    });
+
+    function closePopup() {
+        document.getElementById('feedback-box').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
